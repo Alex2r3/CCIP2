@@ -1,20 +1,27 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
   compatibilityDate: '2024-04-03',
   
   // Directorio fuente de la aplicación
   srcDir: 'app',
-  
+
   // Configuración del servidor de desarrollo
   devServer: {
     port: 3000,
     host: 'localhost'
   },
-  
-  // Configuración de la app
+
+  // 🔥 COMPRESIÓN (gzip + brotli en producción)
+  nitro: {
+    compressPublicAssets: true
+  },
+
+  // Configuración global de la app
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'es'
+      },
       title: 'CCIP - Nuxt 4',
       meta: [
         { charset: 'utf-8' },
@@ -27,5 +34,3 @@ export default defineNuxtConfig({
     }
   }
 })
-
-
