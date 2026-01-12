@@ -2,6 +2,10 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   
+  css: [
+    '@/assets/css/main.css'
+  ],
+  
   // Directorio fuente de la aplicación
   srcDir: 'app',
 
@@ -11,7 +15,7 @@ export default defineNuxtConfig({
     host: 'localhost'
   },
 
-  // 🔥 COMPRESIÓN (gzip + brotli en producción)
+  
   nitro: {
     compressPublicAssets: true
   },
