@@ -11,43 +11,9 @@ export default defineNuxtConfig({
      NUXT IMAGE (OPTIMIZADO)
   =============================== */
   image: {
-    // Configuración para Vercel - usar ipx que funciona bien en producción
-    provider: 'ipx',
-    format: ['webp', 'avif'],
-    quality: 70, // Reducir calidad para mejor compresión
-    densities: [1, 2], // soporte retina sin penalizar performance
-    screens: {
-      xs: 320,
-      sm: 640,
-      md: 768,
-      lg: 1024,
-      xl: 1280,
-      xxl: 1536,
-    },
-    presets: {
-      service: {
-        modifiers: {
-          format: 'webp',
-          quality: 75, // Reducido de 80 a 75
-        }
-      },
-      partner: {
-        modifiers: {
-          format: 'webp',
-          quality: 70, // Reducido de 75 a 70
-        }
-      },
-      hero: {
-        modifiers: {
-          format: 'webp',
-          quality: 75,
-        }
-      }
-    },
-    // Configuración para producción en Vercel
-    ipx: {
-      maxAge: 31536000
-    }
+    format: ['webp'],
+    quality: 70,
+    densities: [1, 2] // soporte retina sin penalizar performance
   },
 
   /* ===============================
@@ -74,46 +40,49 @@ export default defineNuxtConfig({
      NITRO
   =============================== */
   nitro: {
+    // Node server para preview local
+    preset: 'node-server',
     compressPublicAssets: true,
-    // Configurar headers de cache y compresión
+    // Cache headers (do NOT force Content-Encoding)
     routeRules: {
-      '/images/**': { 
-        headers: { 
+      '/images/**': {
+        headers: {
           'Cache-Control': 'public, max-age=31536000, immutable',
-          'Content-Encoding': 'gzip'
-        } 
+        },
       },
-      '/_nuxt/**': { 
-        headers: { 
+      '/_nuxt/**': {
+        headers: {
           'Cache-Control': 'public, max-age=31536000, immutable',
-          'Content-Encoding': 'gzip'
-        } 
+        },
       },
       '/videos/**': {
         headers: {
-          'Cache-Control': 'public, max-age=31536000, immutable'
-        }
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+      },
+      '/fonts/**': {
+        headers: {
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
       },
       '/**': {
         headers: {
-          'Cache-Control': 'public, max-age=3600, s-maxage=86400'
-        }
-      }
+          'Cache-Control': 'public, max-age=3600, s-maxage=86400',
+        },
+      },
     },
-    // Comprimir respuestas
     experimental: {
-      wasm: true
+      wasm: true,
     },
-    // Comprimir todas las respuestas
-    minify: true
+    minify: true,
   },
 
-  // Comprimir en producción
+  // Producción
   vite: {
     build: {
       minify: 'terser',
-      cssMinify: true
-    }
+      cssMinify: true,
+    },
   },
 
   /* ===============================
@@ -134,7 +103,15 @@ export default defineNuxtConfig({
         }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        // Font Awesome - Cargado aquí para SSR correcto en producción
+        { rel: 'preconnect', href: 'https://cdnjs.cloudflare.com', crossorigin: 'anonymous' },
+        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css', crossorigin: 'anonymous' },
+        // Preload fuentes Qanelas para mejor rendimiento
+        { rel: 'preload', as: 'font', href: '/fonts/qanelas/Qanelas-Regular.woff2', type: 'font/woff2', crossorigin: 'anonymous' },
+        { rel: 'preload', as: 'font', href: '/fonts/qanelas/Qanelas-Medium.woff2', type: 'font/woff2', crossorigin: 'anonymous' },
+        { rel: 'preload', as: 'font', href: '/fonts/qanelas/Qanelas-SemiBold.woff2', type: 'font/woff2', crossorigin: 'anonymous' },
+        { rel: 'preload', as: 'font', href: '/fonts/qanelas/Qanelas-Bold.woff2', type: 'font/woff2', crossorigin: 'anonymous' }
       ]
     }
   }
